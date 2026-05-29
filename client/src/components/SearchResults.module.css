@@ -54,10 +54,16 @@
 }
 
 .skeletonRow:nth-child(1) { animation-delay: 0ms; }
-.skeletonRow:nth-child(2) { animation-delay: 45ms; }
-.skeletonRow:nth-child(3) { animation-delay: 90ms; }
-.skeletonRow:nth-child(4) { animation-delay: 135ms; }
-.skeletonRow:nth-child(5) { animation-delay: 180ms; }
+.skeletonRow:nth-child(2) { animation-delay: 40ms; }
+.skeletonRow:nth-child(3) { animation-delay: 80ms; }
+.skeletonRow:nth-child(4) { animation-delay: 120ms; }
+.skeletonRow:nth-child(5) { animation-delay: 160ms; }
+
+/* Stagger shimmer phase per row */
+.skeletonRow:nth-child(2) .shimmer { animation-delay: 180ms; }
+.skeletonRow:nth-child(3) .shimmer { animation-delay: 360ms; }
+.skeletonRow:nth-child(4) .shimmer { animation-delay: 540ms; }
+.skeletonRow:nth-child(5) .shimmer { animation-delay: 720ms; }
 
 .skeletonArt {
   width: 48px;
@@ -114,12 +120,11 @@
     border-color var(--dur-fast) var(--ease-smooth),
     background var(--dur-fast) var(--ease-smooth),
     box-shadow var(--dur-base) var(--ease-smooth),
-    transform var(--dur-base) var(--ease-spring);
+    transform var(--dur-base) var(--ease-out-expo);
   animation: rowIn var(--dur-slow) var(--ease-out) both;
   cursor: default;
 }
 
-/* Stagger entrance per track */
 .row:nth-child(1) { animation-delay: 0ms; }
 .row:nth-child(2) { animation-delay: 40ms; }
 .row:nth-child(3) { animation-delay: 80ms; }
@@ -131,7 +136,7 @@
   border-color: var(--border-accent);
   background: var(--surface2);
   box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 /* ---- Album art ---- */

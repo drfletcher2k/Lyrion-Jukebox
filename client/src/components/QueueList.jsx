@@ -42,7 +42,7 @@ export default function QueueList({ queue, adminMode, onRemove, onMove, onSkip, 
   return (
     <div className={styles.list}>
       {queue.map((item, idx) => (
-        <div key={item.id} className={styles.row}>
+        <div key={item.id} className={styles.row} data-status={item.status}>
           <span className={styles.pos}>{idx + 1}</span>
           {item.album_art_url ? (
             <img
