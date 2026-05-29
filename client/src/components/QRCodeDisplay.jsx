@@ -1,30 +1,29 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
 import styles from './QRCodeDisplay.module.css';
 
-export default function QRCodeDisplay({ url, size = 96 }) {
-  const canvasRef = useRef(null);
+export default function QRCodeDisplay({ url }) {
+  const [dataUrl, setDataUrl] = useState('');
 
   useEffect(() => {
-    if (!url || !canvasRef.current) return;
-    const computed = getComputedStyle(document.documentElement);
-    const dark = computed.getPropertyValue('--text').trim() || '#ededf5';
-    const light = computed.getPropertyValue('--surface2').trim() || '#17171e';
+    if (!url) return;
+    QRCode.toDataURL(url, {
+      width: 140,
+      margin: 2,
+      color: {
+        dark: '#ededf5',
+        light: '#17171e',
+      },
+    })
+      .then(setDataUrl)
+      .catch(() => {});
+  }, [url]);
 
-    QRCode.toCanvas(canvasRef.current, url, {
-      width: size,
-      margin: 1,
-      color: { dark, light },
-    });
-  }, [url, size]);
+  if (!dataUrl) return null;
 
   return (
     <div className={styles.wrapper}>
-      <canvas
-        ref={canvasRef}
-        className={styles.canvas}
-        aria-label="QR code for guest song requests"
-      />
+      <img src={dataUrl} alt="QR code to request a song" className={styles.qrImg} />
       <span className={styles.hint}>Scan to request</span>
     </div>
   );

@@ -35,6 +35,8 @@ export default function NowPlaying({ nowPlaying, isLoading = false }) {
     );
   }
 
+  const [artError, setArtError] = useState(false);
+
   const progress =
     nowPlaying.duration_ms && nowPlaying.position_ms
       ? Math.min(100, (nowPlaying.position_ms / nowPlaying.duration_ms) * 100)
@@ -49,7 +51,7 @@ export default function NowPlaying({ nowPlaying, isLoading = false }) {
           src={nowPlaying.albumArtUrl}
           alt={nowPlaying.album}
           className={styles.art}
-          onError={() => setArtErrorId(nowPlaying.spotify_track_id)}
+          onError={() => setArtError(true)}
         />
       ) : (
         <div className={styles.artPlaceholder} />
