@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styles from './NowPlaying.module.css';
 
 function formatDuration(ms) {
@@ -17,6 +18,8 @@ export default function NowPlaying({ nowPlaying }) {
     );
   }
 
+  const [artError, setArtError] = useState(false);
+
   const progress =
     nowPlaying.duration_ms && nowPlaying.position_ms
       ? Math.min(100, (nowPlaying.position_ms / nowPlaying.duration_ms) * 100)
@@ -24,11 +27,12 @@ export default function NowPlaying({ nowPlaying }) {
 
   return (
     <div className={styles.container}>
-      {nowPlaying.albumArtUrl ? (
+      {nowPlaying.albumArtUrl && !artError ? (
         <img
           src={nowPlaying.albumArtUrl}
           alt={nowPlaying.album}
           className={styles.art}
+          onError={() => setArtError(true)}
         />
       ) : (
         <div className={styles.artPlaceholder} />
