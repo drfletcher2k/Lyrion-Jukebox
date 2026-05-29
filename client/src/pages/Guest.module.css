@@ -1,0 +1,53 @@
+.page {
+  min-height: 100vh;
+  padding: 24px 16px 40px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.logo {
+  font-size: 32px;
+  color: var(--accent);
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.nameField {
+  margin-bottom: 12px;
+}
+
+.search {
+  margin-bottom: 16px;
+}
+
+.feedback {
+  margin-bottom: 12px;
+}
+
+.confirmation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #1a3a2a;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: var(--accent);
+}
+
+.confirmIcon {
+  font-size: 20px;
+  font-weight: 700;
+}
