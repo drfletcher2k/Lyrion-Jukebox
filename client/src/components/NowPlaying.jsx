@@ -8,7 +8,24 @@ function formatDuration(ms) {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
-export default function NowPlaying({ nowPlaying }) {
+export default function NowPlaying({ nowPlaying, isLoading = false }) {
+  const [artErrorId, setArtErrorId] = useState(null);
+
+  if (isLoading) {
+    return (
+      <div className={styles.container} aria-busy="true">
+        <div className={`${styles.artPlaceholder} ${styles.shimmer}`} />
+        <div className={styles.info}>
+          <div className={`${styles.skeletonLabel} ${styles.shimmer}`} />
+          <div className={`${styles.skeletonTitle} ${styles.shimmer}`} />
+          <div className={`${styles.skeletonArtist} ${styles.shimmer}`} />
+          <div className={`${styles.skeletonAlbum} ${styles.shimmer}`} />
+          <div className={`${styles.skeletonProgress} ${styles.shimmer}`} />
+        </div>
+      </div>
+    );
+  }
+
   if (!nowPlaying) {
     return (
       <div className={styles.empty}>
@@ -24,6 +41,8 @@ export default function NowPlaying({ nowPlaying }) {
     nowPlaying.duration_ms && nowPlaying.position_ms
       ? Math.min(100, (nowPlaying.position_ms / nowPlaying.duration_ms) * 100)
       : 0;
+
+  const artError = artErrorId === nowPlaying.spotify_track_id;
 
   return (
     <div className={styles.container}>

@@ -20,7 +20,7 @@
   /* Text */
   --text: #ededf5;
   --text-secondary: #9898aa;
-  --text-muted: #60607a;
+  --text-muted: #7e7e9e;
 
   /* Accent */
   --accent: #1DB954;
@@ -31,22 +31,30 @@
   /* Danger */
   --danger: #e74c3c;
   --danger-hover: #f05545;
-  --danger-dim: rgba(231, 76, 60, 0.1);
+  --danger-dim: rgba(231, 76, 60, 0.10);
 
-  /* Layered shadows */
-  --shadow-sm:
-    0 1px 2px rgba(0, 0, 0, 0.5),
+  /* Shadows — multi-layer with inset 1px top-light */
+  --shadow-xs:
+    0 1px 2px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  --shadow-md:
-    0 4px 16px rgba(0, 0, 0, 0.55),
-    0 1px 3px rgba(0, 0, 0, 0.4),
+  --shadow-sm:
+    0 2px 5px rgba(0, 0, 0, 0.55),
+    0 1px 2px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  --shadow-lg:
-    0 8px 32px rgba(0, 0, 0, 0.65),
-    0 2px 8px rgba(0, 0, 0, 0.4),
+  --shadow-md:
+    0 6px 22px rgba(0, 0, 0, 0.62),
+    0 2px 7px rgba(0, 0, 0, 0.45),
+    0 1px 2px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  --shadow-accent: 0 4px 20px rgba(29, 185, 84, 0.28);
-  --shadow-focus: 0 0 0 3px rgba(29, 185, 84, 0.18);
+  --shadow-lg:
+    0 12px 42px rgba(0, 0, 0, 0.72),
+    0 4px 14px rgba(0, 0, 0, 0.5),
+    0 1px 4px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --shadow-accent:
+    0 4px 22px rgba(29, 185, 84, 0.38),
+    0 2px 8px rgba(29, 185, 84, 0.2);
+  --shadow-focus: 0 0 0 3px rgba(29, 185, 84, 0.22);
 
   /* Radii */
   --radius-xs: 4px;
@@ -54,6 +62,7 @@
   --radius: 10px;
   --radius-lg: 14px;
   --radius-xl: 20px;
+  --radius-2xl: 28px;
 
   /* 8pt grid */
   --space-1: 4px;
@@ -82,9 +91,11 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
 
   /* Durations */
+  --dur-micro: 60ms;
   --dur-fast: 110ms;
   --dur-base: 200ms;
   --dur-slow: 360ms;
@@ -138,8 +149,8 @@ button:focus-visible {
 }
 
 button:active:not(:disabled) {
-  transform: scale(0.96);
-  transition-duration: 70ms;
+  transform: scale(0.95) translateY(1px);
+  transition-duration: var(--dur-micro);
 }
 
 button:disabled {
@@ -158,8 +169,11 @@ button:disabled {
   transform: translateY(-1px);
 }
 .btn-primary:active:not(:disabled) {
-  transform: translateY(0) scale(0.96);
-  box-shadow: var(--shadow-sm);
+  background: var(--accent);
+  transform: scale(0.95) translateY(1px);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    inset 0 2px 4px rgba(0, 0, 0, 0.22);
 }
 
 .btn-danger {
@@ -175,7 +189,7 @@ button:disabled {
   transform: translateY(-1px);
 }
 .btn-danger:active:not(:disabled) {
-  transform: scale(0.96);
+  transform: scale(0.95) translateY(1px);
 }
 
 .btn-ghost {
@@ -192,7 +206,7 @@ button:disabled {
   box-shadow: var(--shadow-md);
 }
 .btn-ghost:active:not(:disabled) {
-  transform: scale(0.96);
+  transform: scale(0.95) translateY(1px);
 }
 
 /* ---- Input ---- */
@@ -227,7 +241,7 @@ input[type='text']::placeholder {
 .card {
   background: var(--surface);
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   box-shadow: var(--shadow-md);
   padding: var(--space-4);
 }
@@ -281,4 +295,15 @@ input[type='text']::placeholder {
 
 .fade-in {
   animation: fadeUp var(--dur-slow) var(--ease-out) both;
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

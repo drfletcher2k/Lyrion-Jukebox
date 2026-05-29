@@ -45,7 +45,10 @@ export default function GuestPage() {
     <div className={styles.page}>
       <div className={styles.header}>
         <div className={styles.logo}>♫</div>
-        <h1 className={styles.title}>Request a Song</h1>
+        <div className={styles.headerText}>
+          <h1 className={styles.title}>Request a Song</h1>
+          <p className={styles.subtitle}>Your pick gets added to the venue queue.</p>
+        </div>
       </div>
 
       <div className={styles.nameField}>

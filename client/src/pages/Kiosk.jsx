@@ -11,7 +11,6 @@ const apiBase = import.meta.env.VITE_API_BASE_URL || '';
 const POLL_INTERVAL = 5000;
 
 export default function KioskPage() {
-  // null = loading; [] = empty; [...] = data
   const [nowPlaying, setNowPlaying] = useState(null);
   const [queue, setQueue] = useState(null);
   const [tracks, setTracks] = useState([]);
@@ -112,7 +111,7 @@ export default function KioskPage() {
         </div>
         {qrUrl && (
           <div className={styles.qrArea}>
-            <QRCodeDisplay url={qrUrl} />
+            <QRCodeDisplay url={qrUrl} size={80} />
           </div>
         )}
       </div>
@@ -121,7 +120,7 @@ export default function KioskPage() {
         <div className={styles.left}>
           <div className={styles.section}>
             <div className="section-title">Now Playing</div>
-            <NowPlaying nowPlaying={nowPlaying} />
+            <NowPlaying nowPlaying={nowPlaying} isLoading={queue === null} />
           </div>
 
           <div className={styles.section}>
