@@ -6,12 +6,38 @@ const STATUS_LABELS = {
   playing: 'Playing',
 };
 
-export default function QueueList({ queue, adminMode, onRemove, onMove, onSkip }) {
-  if (!queue.length) {
+const SKELETON_COUNT = 3;
+
+function SkeletonRow({ delay }) {
+  return (
+    <div className={styles.skeletonRow} style={{ animationDelay: `${delay}ms` }}>
+      <div className={`${styles.skeletonPos} ${styles.shimmer}`} />
+      <div className={`${styles.skeletonArt} ${styles.shimmer}`} />
+      <div className={styles.skeletonInfo}>
+        <div className={`${styles.skeletonTitle} ${styles.shimmer}`} />
+        <div className={`${styles.skeletonSub} ${styles.shimmer}`} />
+      </div>
+      <div className={`${styles.skeletonBadge} ${styles.shimmer}`} />
+    </div>
+  );
+}
+
+export default function QueueList({ queue, adminMode, onRemove, onMove, onSkip, isLoading }) {
+  if (isLoading) {
     return (
-      <div className={styles.empty}>No requests yet</div>
+      <div className={styles.list}>
+        {Array.from({ length: SKELETON_COUNT }, (_, i) => (
+          <SkeletonRow key={i} delay={i * 60} />
+        ))}
+      </div>
     );
   }
+
+  if (!queue || !queue.length) {
+    return <div className={styles.empty}>No requests in the queue yet</div>;
+  }
+
+  const pendingItems = queue.filter((q) => q.status === 'pending');
 
   return (
     <div className={styles.list}>
@@ -19,7 +45,11 @@ export default function QueueList({ queue, adminMode, onRemove, onMove, onSkip }
         <div key={item.id} className={styles.row}>
           <span className={styles.pos}>{idx + 1}</span>
           {item.album_art_url ? (
-            <img src={item.album_art_url} alt={item.album} className={styles.art} />
+            <img
+              src={item.album_art_url}
+              alt={item.album}
+              className={styles.art}
+            />
           ) : (
             <div className={styles.artPlaceholder} />
           )}
@@ -31,7 +61,7 @@ export default function QueueList({ queue, adminMode, onRemove, onMove, onSkip }
             )}
           </div>
           <div className={styles.right}>
-            <span className={`${styles.badge} ${styles[item.status]}`}>
+            <span className={`${styles.badge} ${styles[item.status] || ''}`}>
               {STATUS_LABELS[item.status] || item.status}
             </span>
             {adminMode && (
@@ -50,7 +80,7 @@ export default function QueueList({ queue, adminMode, onRemove, onMove, onSkip }
                       className="btn-ghost"
                       title="Move down"
                       onClick={() => onMove(item.id, 'down')}
-                      disabled={idx === queue.filter((q) => q.status === 'pending').length - 1}
+                      disabled={idx === pendingItems.length - 1}
                     >
                       ↓
                     </button>

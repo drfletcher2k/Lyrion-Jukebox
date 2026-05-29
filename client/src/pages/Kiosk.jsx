@@ -11,9 +11,11 @@ const apiBase = import.meta.env.VITE_API_BASE_URL || '';
 const POLL_INTERVAL = 5000;
 
 export default function KioskPage() {
+  // null = loading; [] = empty; [...] = data
   const [nowPlaying, setNowPlaying] = useState(null);
-  const [queue, setQueue] = useState([]);
+  const [queue, setQueue] = useState(null);
   const [tracks, setTracks] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const [requesting, setRequesting] = useState(null);
   const [confirmation, setConfirmation] = useState(null);
   const [error, setError] = useState(null);
@@ -24,7 +26,7 @@ export default function KioskPage() {
       const res = await fetch(`${apiBase}/api/queue/status`);
       if (!res.ok) return;
       const data = await res.json();
-      setNowPlaying(data.nowPlaying);
+      setNowPlaying(data.nowPlaying || null);
       setQueue(data.queue || []);
     } catch {
       // Silent — don't disrupt kiosk display on transient failures
@@ -38,11 +40,10 @@ export default function KioskPage() {
   }, [fetchStatus]);
 
   useEffect(() => {
-    // Ask server for PUBLIC_BASE_URL-based guest URL
     fetch(`${apiBase}/api/queue/status`)
       .then(() => {
-        // Derive guest URL from current host if VITE_API_BASE_URL not set
-        const base = import.meta.env.VITE_PUBLIC_BASE_URL ||
+        const base =
+          import.meta.env.VITE_PUBLIC_BASE_URL ||
           (typeof window !== 'undefined' ? window.location.origin : '');
         setQrUrl(`${base}/guest`);
       })
@@ -106,7 +107,7 @@ export default function KioskPage() {
     <div className={styles.page}>
       <div className={styles.topBar}>
         <div className={styles.brandArea}>
-          <span className={styles.logo}>&#9835;</span>
+          <span className={styles.logo}>♫</span>
           <h1 className={styles.title}>Lyrion Jukebox</h1>
         </div>
         {qrUrl && (
@@ -127,6 +128,7 @@ export default function KioskPage() {
             <div className="section-title">Request Queue</div>
             <QueueList
               queue={queue}
+              isLoading={queue === null}
               adminMode
               onRemove={handleRemove}
               onMove={handleMove}
@@ -146,17 +148,21 @@ export default function KioskPage() {
             )}
 
             {confirmation && (
-              <div className={`${styles.confirmation} fade-in`}>
-                &#10003; <strong>{confirmation.track.title}</strong> added
-                {confirmation.position && ` — #${confirmation.position}`}
+              <div className={styles.confirmation}>
+                <span className={styles.confirmCheck}>✓</span>
+                <span>
+                  <strong>{confirmation.track.title}</strong> added to the queue
+                  {confirmation.position && ` — position #${confirmation.position}`}
+                </span>
               </div>
             )}
 
-            <SearchBar onResults={setTracks} />
+            <SearchBar onResults={setTracks} onLoading={setIsSearching} />
             <SearchResults
               tracks={tracks}
               onRequest={handleRequest}
               requesting={requesting}
+              isLoading={isSearching}
             />
           </div>
         </div>

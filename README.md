@@ -90,7 +90,7 @@ cd server && npm run dev
 cd client && npm run dev
 ```
 
-### 5. Build & run (production)
+### 5. Build & run (production, manual)
 
 ```bash
 cd client && npm run build
@@ -98,6 +98,25 @@ cd ../server && npm start
 ```
 
 The Express server will serve the built client from `../client/dist` on `http://<your-host>:<PORT>`.
+
+### 5b. Run with Docker (recommended for home server)
+
+Make sure `server/.env` is configured, then:
+
+```bash
+docker compose up -d
+```
+
+That's it. Docker builds the React app, starts Express, and serves everything on port 3200. The SQLite database is stored in a named volume (`jukebox-data`) so it survives restarts and rebuilds.
+
+Other useful commands:
+
+```bash
+docker compose logs -f          # tail logs
+docker compose restart          # restart after .env changes
+docker compose down             # stop
+docker compose up -d --build    # rebuild after a git pull
+```
 
 ## Usage
 

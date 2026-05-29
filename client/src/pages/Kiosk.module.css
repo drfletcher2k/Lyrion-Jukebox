@@ -1,79 +1,196 @@
-.page {
-  min-height: 100vh;
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+/* ---- Confirmation entrance ---- */
+@keyframes confirmIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
+/* ---- Page shell ---- */
+.page {
+  min-height: 100vh;
+  padding: var(--space-5);
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* ---- Glassmorphism top bar ---- */
 .topBar {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 24px;
-  gap: 16px;
+  gap: var(--space-4);
+  background: rgba(17, 17, 22, 0.75);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4) var(--space-6);
+  box-shadow: var(--shadow-lg);
+  position: sticky;
+  top: var(--space-4);
+  z-index: 20;
 }
 
 .brandArea {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .logo {
-  font-size: 36px;
+  font-size: 26px;
   color: var(--accent);
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+  line-height: 1;
 }
 
 .title {
-  font-size: 28px;
+  font-size: var(--text-2xl);
   font-weight: 800;
+  letter-spacing: -0.03em;
   color: var(--text);
+  line-height: 1;
 }
 
-.qrArea {
-  background: #fff;
-  padding: 10px;
-  border-radius: 10px;
-  flex-shrink: 0;
-}
-
+/* ---- Main two-column grid ---- */
 .layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas: 'left right';
+  gap: var(--space-5);
+  align-items: start;
 }
 
-@media (max-width: 768px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-  .topBar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-.left, .right {
+.left {
+  grid-area: left;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-5);
+  position: sticky;
+  top: calc(var(--space-4) + 80px);
+  max-height: calc(100vh - var(--space-4) - 80px - var(--space-5));
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
+.left::-webkit-scrollbar {
+  display: none;
+}
+
+.right {
+  grid-area: right;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* ---- Section ---- */
 .section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-3);
 }
 
+/* ---- Feedback ---- */
 .feedbackRow {
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
 }
 
+/* ---- Confirmation toast ---- */
 .confirmation {
-  background: #1a3a2a;
-  border: 1px solid var(--accent);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--accent-dim);
+  border: 1px solid var(--border-accent);
   border-radius: var(--radius);
-  padding: 10px 14px;
-  font-size: 14px;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
   color: var(--accent);
+  box-shadow: 0 0 24px var(--accent-glow);
+  animation: confirmIn var(--dur-slow) var(--ease-out) both;
+}
+
+.confirmCheck {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ---- Tablet landscape: side-by-side, narrower breakpoint ---- */
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .left {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .topBar {
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-lg);
+  }
+
+  .title {
+    font-size: var(--text-xl);
+  }
+}
+
+/* ---- Tablet portrait: single column ---- */
+@media (max-width: 700px) {
+  .page {
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'right'
+      'left';
+  }
+
+  .topBar {
+    top: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
+    gap: var(--space-3);
+  }
+
+  .title {
+    font-size: var(--text-lg);
+  }
+
+  .logo {
+    font-size: 22px;
+  }
+}
+
+/* ---- Small phones ---- */
+@media (max-width: 420px) {
+  .page {
+    padding: var(--space-3);
+  }
+
+  .topBar {
+    flex-wrap: wrap;
+    border-radius: var(--radius);
+  }
+
+  .qrArea {
+    display: none;
+  }
 }

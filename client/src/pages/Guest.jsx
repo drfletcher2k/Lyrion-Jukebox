@@ -8,6 +8,7 @@ const apiBase = import.meta.env.VITE_API_BASE_URL || '';
 
 export default function GuestPage() {
   const [tracks, setTracks] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const [requesting, setRequesting] = useState(null);
   const [confirmation, setConfirmation] = useState(null);
   const [error, setError] = useState(null);
@@ -43,7 +44,7 @@ export default function GuestPage() {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <div className={styles.logo}>&#9835;</div>
+        <div className={styles.logo}>♫</div>
         <h1 className={styles.title}>Request a Song</h1>
       </div>
 
@@ -57,9 +58,7 @@ export default function GuestPage() {
         />
       </div>
 
-      <div className={styles.search}>
-        <SearchBar onResults={setTracks} />
-      </div>
+      <SearchBar onResults={setTracks} onLoading={setIsSearching} />
 
       {error && (
         <div className={styles.feedback}>
@@ -68,8 +67,8 @@ export default function GuestPage() {
       )}
 
       {confirmation && (
-        <div className={`${styles.confirmation} fade-in`}>
-          <div className={styles.confirmIcon}>&#10003;</div>
+        <div className={styles.confirmation}>
+          <div className={styles.confirmIcon}>✓</div>
           <div>
             <strong>{confirmation.track.title}</strong> added to the queue
             {confirmation.position && ` — position #${confirmation.position}`}
@@ -81,6 +80,7 @@ export default function GuestPage() {
         tracks={tracks}
         onRequest={handleRequest}
         requesting={requesting}
+        isLoading={isSearching}
       />
     </div>
   );
