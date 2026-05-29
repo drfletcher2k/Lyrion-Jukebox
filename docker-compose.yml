@@ -1,0 +1,13 @@
+services:
+  jukebox:
+    build: .
+    ports:
+      - "3200:3200"
+    env_file:
+      - ./server/.env
+    volumes:
+      - jukebox-data:/app/server/data
+    restart: unless-stopped
+
+volumes:
+  jukebox-data:
