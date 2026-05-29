@@ -11,7 +11,8 @@ export default function NowPlaying({ nowPlaying }) {
   if (!nowPlaying) {
     return (
       <div className={styles.empty}>
-        <span>Nothing playing</span>
+        <span className={styles.emptyIcon}>♪</span>
+        <span>Nothing playing right now</span>
       </div>
     );
   }
@@ -24,16 +25,27 @@ export default function NowPlaying({ nowPlaying }) {
   return (
     <div className={styles.container}>
       {nowPlaying.albumArtUrl ? (
-        <img src={nowPlaying.albumArtUrl} alt={nowPlaying.album} className={styles.art} />
+        <img
+          src={nowPlaying.albumArtUrl}
+          alt={nowPlaying.album}
+          className={styles.art}
+        />
       ) : (
         <div className={styles.artPlaceholder} />
       )}
       <div className={styles.info}>
+        <div className={styles.liveRow}>
+          <span className={styles.liveDot} />
+          <span className={styles.liveLabel}>Now Playing</span>
+        </div>
         <div className={styles.title}>{nowPlaying.title || 'Unknown'}</div>
         <div className={styles.artist}>{nowPlaying.artist || ''}</div>
         <div className={styles.album}>{nowPlaying.album || ''}</div>
         <div className={styles.progressBar}>
-          <div className={styles.progressFill} style={{ width: `${progress}%` }} />
+          <div
+            className={styles.progressFill}
+            style={{ width: `${progress}%` }}
+          />
         </div>
         <div className={styles.times}>
           <span>{formatDuration(nowPlaying.position_ms)}</span>

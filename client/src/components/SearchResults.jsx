@@ -1,5 +1,7 @@
 import styles from './SearchResults.module.css';
 
+const SKELETON_COUNT = 5;
+
 function formatDuration(ms) {
   if (!ms) return '';
   const m = Math.floor(ms / 60000);
@@ -7,7 +9,33 @@ function formatDuration(ms) {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
-export default function SearchResults({ tracks, onRequest, requesting }) {
+function SkeletonRow() {
+  return (
+    <div className={styles.skeletonRow}>
+      <div className={`${styles.skeletonArt} ${styles.shimmer}`} />
+      <div className={styles.skeletonInfo}>
+        <div className={`${styles.skeletonTitle} ${styles.shimmer}`} />
+        <div className={`${styles.skeletonSub} ${styles.shimmer}`} />
+      </div>
+      <div className={styles.skeletonRight}>
+        <div className={`${styles.skeletonDuration} ${styles.shimmer}`} />
+        <div className={`${styles.skeletonBtn} ${styles.shimmer}`} />
+      </div>
+    </div>
+  );
+}
+
+export default function SearchResults({ tracks, onRequest, requesting, isLoading }) {
+  if (isLoading) {
+    return (
+      <div className={styles.list}>
+        {Array.from({ length: SKELETON_COUNT }, (_, i) => (
+          <SkeletonRow key={i} />
+        ))}
+      </div>
+    );
+  }
+
   if (!tracks.length) return null;
 
   return (
@@ -26,17 +54,19 @@ export default function SearchResults({ tracks, onRequest, requesting }) {
           <div className={styles.info}>
             <div className={styles.title}>{track.title}</div>
             <div className={styles.sub}>
-              {track.artist} &mdash; {track.album}
+              {track.artist}&mdash;{track.album}
             </div>
           </div>
           <div className={styles.right}>
-            <span className={styles.duration}>{formatDuration(track.duration_ms)}</span>
+            <span className={styles.duration}>
+              {formatDuration(track.duration_ms)}
+            </span>
             <button
               className="btn-primary"
               onClick={() => onRequest(track)}
               disabled={requesting === track.spotify_track_id}
             >
-              {requesting === track.spotify_track_id ? '...' : 'Request'}
+              {requesting === track.spotify_track_id ? '…' : 'Request'}
             </button>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
+import styles from './QRCodeDisplay.module.css';
 
 export default function QRCodeDisplay({ url }) {
   const canvasRef = useRef(null);
@@ -7,25 +8,19 @@ export default function QRCodeDisplay({ url }) {
   useEffect(() => {
     if (!url || !canvasRef.current) return;
     QRCode.toCanvas(canvasRef.current, url, {
-      width: 180,
-      margin: 2,
-      color: { dark: '#000000', light: '#ffffff' },
+      width: 160,
+      margin: 1,
+      color: {
+        dark: '#ededf5',
+        light: '#17171e',
+      },
     });
   }, [url]);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 8,
-      }}
-    >
-      <canvas ref={canvasRef} style={{ borderRadius: 8 }} />
-      <span style={{ fontSize: 12, color: 'var(--text-muted)', textAlign: 'center' }}>
-        Scan to request a song
-      </span>
+    <div className={styles.wrapper}>
+      <canvas ref={canvasRef} className={styles.canvas} />
+      <span className={styles.hint}>Scan to request</span>
     </div>
   );
 }
