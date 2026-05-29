@@ -55,7 +55,7 @@ Edit `server/.env`:
 | `LMS_PLAYER_ID` | Player MAC address, e.g. `aa:bb:cc:dd:ee:ff`. Find it in LMS → Settings → Player. |
 | `SPOTIFY_CLIENT_ID` | From your Spotify Developer app |
 | `SPOTIFY_CLIENT_SECRET` | From your Spotify Developer app |
-| `PUBLIC_BASE_URL` | The URL guests use to reach the frontend, e.g. `http://192.168.1.10:3000` |
+| `PUBLIC_BASE_URL` | The URL guests use to reach the frontend, e.g. `http://192.168.1.10:3200` |
 | `DB_PATH` | Path for the SQLite file (default `./data/jukebox.db`) |
 | `POLLING_INTERVAL_MS` | How often (ms) the worker polls LMS (default `5000`) |
 
