@@ -1,56 +1,176 @@
+/* ---- Shimmer animation ---- */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ---- Row entrance ---- */
+@keyframes rowIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Shimmer base ---- */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface2) 25%,
+    var(--surface3) 50%,
+    var(--surface2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: var(--radius-xs);
+}
+
+/* ---- Container ---- */
 .list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 12px;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
 }
 
-.row {
+/* ---- Skeleton row ---- */
+.skeletonRow {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 10px 12px;
-  transition: border-color 0.15s;
+  animation: rowIn var(--dur-slow) var(--ease-out) both;
 }
+
+.skeletonRow:nth-child(1) { animation-delay: 0ms; }
+.skeletonRow:nth-child(2) { animation-delay: 45ms; }
+.skeletonRow:nth-child(3) { animation-delay: 90ms; }
+.skeletonRow:nth-child(4) { animation-delay: 135ms; }
+.skeletonRow:nth-child(5) { animation-delay: 180ms; }
+
+.skeletonArt {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.skeletonInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.skeletonTitle {
+  height: 14px;
+  width: 58%;
+}
+
+.skeletonSub {
+  height: 11px;
+  width: 42%;
+}
+
+.skeletonRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.skeletonDuration {
+  width: 34px;
+  height: 12px;
+}
+
+.skeletonBtn {
+  width: 70px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Real row ---- */
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  transition:
+    border-color var(--dur-fast) var(--ease-smooth),
+    background var(--dur-fast) var(--ease-smooth),
+    box-shadow var(--dur-base) var(--ease-smooth),
+    transform var(--dur-base) var(--ease-spring);
+  animation: rowIn var(--dur-slow) var(--ease-out) both;
+  cursor: default;
+}
+
+/* Stagger entrance per track */
+.row:nth-child(1) { animation-delay: 0ms; }
+.row:nth-child(2) { animation-delay: 40ms; }
+.row:nth-child(3) { animation-delay: 80ms; }
+.row:nth-child(4) { animation-delay: 120ms; }
+.row:nth-child(5) { animation-delay: 160ms; }
+.row:nth-child(n+6) { animation-delay: 200ms; }
 
 .row:hover {
-  border-color: var(--accent);
+  border-color: var(--border-accent);
+  background: var(--surface2);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
+/* ---- Album art ---- */
 .art {
   width: 48px;
   height: 48px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   object-fit: cover;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
 }
 
 .artPlaceholder {
   width: 48px;
   height: 48px;
-  border-radius: 4px;
-  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  background: var(--surface3);
+  border: 1px solid var(--border);
   flex-shrink: 0;
 }
 
+/* ---- Text info ---- */
 .info {
   flex: 1;
   min-width: 0;
 }
 
 .title {
-  font-size: 14px;
+  font-size: var(--text-sm);
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .sub {
-  font-size: 12px;
+  font-size: var(--text-xs);
   color: var(--text-muted);
   margin-top: 2px;
   white-space: nowrap;
@@ -58,15 +178,18 @@
   text-overflow: ellipsis;
 }
 
+/* ---- Right side ---- */
 .right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2);
   flex-shrink: 0;
 }
 
 .duration {
-  font-size: 13px;
+  font-size: var(--text-xs);
   color: var(--text-muted);
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }

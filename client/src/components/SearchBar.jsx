@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import styles from './SearchBar.module.css';
 
 export default function SearchBar({ onResults, onLoading }) {
   const [query, setQuery] = useState('');
@@ -11,6 +12,7 @@ export default function SearchBar({ onResults, onLoading }) {
 
     if (!query.trim()) {
       onResults([]);
+      if (onLoading) onLoading(false);
       return;
     }
 
@@ -36,22 +38,15 @@ export default function SearchBar({ onResults, onLoading }) {
   }, [query]);
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className={styles.wrapper}>
       <input
         type="text"
-        placeholder="Search for a song or artist..."
+        placeholder="Search for a song or artist…"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
       {loading && (
-        <span
-          style={{
-            position: 'absolute',
-            right: 12,
-            top: '50%',
-            transform: 'translateY(-50%)',
-          }}
-        >
+        <span className={styles.spinnerWrap}>
           <span className="spinner" />
         </span>
       )}

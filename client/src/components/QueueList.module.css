@@ -1,115 +1,248 @@
+/* ---- Shimmer animation for skeletons ---- */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ---- Row entrance stagger ---- */
+@keyframes rowIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Skeleton base ---- */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface2) 25%,
+    var(--surface3) 50%,
+    var(--surface2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: var(--radius-xs);
+}
+
+/* ---- List container ---- */
 .list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
+/* ---- Empty state ---- */
 .empty {
-  padding: 20px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-7) var(--space-6);
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: var(--text-sm);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
+/* ---- Real row ---- */
 .row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 10px 12px;
+  transition:
+    border-color var(--dur-fast) var(--ease-smooth),
+    background var(--dur-fast) var(--ease-smooth),
+    box-shadow var(--dur-fast) var(--ease-smooth);
+  animation: rowIn var(--dur-slow) var(--ease-out) both;
 }
 
+/* Stagger entrance delays */
+.row:nth-child(1) { animation-delay: 0ms; }
+.row:nth-child(2) { animation-delay: 35ms; }
+.row:nth-child(3) { animation-delay: 70ms; }
+.row:nth-child(4) { animation-delay: 105ms; }
+.row:nth-child(5) { animation-delay: 140ms; }
+.row:nth-child(n+6) { animation-delay: 175ms; }
+
+.row:hover {
+  border-color: var(--border-strong);
+  background: var(--surface2);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---- Skeleton row ---- */
+.skeletonRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  animation: rowIn var(--dur-slow) var(--ease-out) both;
+}
+
+.skeletonRow:nth-child(1) { animation-delay: 0ms; }
+.skeletonRow:nth-child(2) { animation-delay: 60ms; }
+.skeletonRow:nth-child(3) { animation-delay: 120ms; }
+
+.skeletonPos {
+  width: 24px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.skeletonArt {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.skeletonInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.skeletonTitle {
+  height: 13px;
+  width: 60%;
+}
+
+.skeletonSub {
+  height: 11px;
+  width: 40%;
+}
+
+.skeletonBadge {
+  width: 56px;
+  height: 22px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+/* ---- Position number ---- */
 .pos {
   width: 24px;
   text-align: center;
-  font-size: 13px;
+  font-size: var(--text-xs);
+  font-weight: 600;
   color: var(--text-muted);
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
+/* ---- Album art ---- */
 .art {
   width: 44px;
   height: 44px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   object-fit: cover;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .artPlaceholder {
   width: 44px;
   height: 44px;
-  border-radius: 4px;
-  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  background: var(--surface3);
+  border: 1px solid var(--border);
   flex-shrink: 0;
 }
 
+/* ---- Text info ---- */
 .info {
   flex: 1;
   min-width: 0;
 }
 
 .title {
-  font-size: 14px;
+  font-size: var(--text-sm);
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.sub {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.sub {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
 .guest {
-  font-size: 11px;
+  font-size: var(--text-xs);
   color: var(--accent);
   margin-top: 2px;
+  font-weight: 500;
 }
 
+/* ---- Right side: badge + actions ---- */
 .right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   flex-shrink: 0;
 }
 
 .badge {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
   border-radius: 999px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 
 .pending {
-  background: var(--surface2);
+  background: var(--surface3);
   color: var(--text-muted);
+  border: 1px solid var(--border);
 }
 
 .inserted {
-  background: #1a3a2a;
+  background: var(--accent-dim);
   color: var(--accent);
+  border: 1px solid var(--border-accent);
 }
 
 .playing {
   background: var(--accent);
   color: #000;
+  box-shadow: 0 2px 8px var(--accent-glow);
 }
 
 .adminBtns {
   display: flex;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .adminBtns button {
   padding: 5px 10px;
-  font-size: 12px;
+  font-size: var(--text-xs);
+  min-width: 28px;
 }
